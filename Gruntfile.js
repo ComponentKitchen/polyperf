@@ -32,7 +32,7 @@ function buildBuildList() {
 
   allJSPackages.forEach(pkg => {
     obj['js-packages/' + pkg + '/dist/' + pkg + '.js'] = ['js-packages/' + pkg + '/src/*.js'];
-});
+  });
 
   // Special cases: dist gets built from the es5globals file.
   obj['js-packages/js-component-mixins/dist/js-component-mixins.js'] = 'js-packages/js-component-mixins/es5globals.js';
@@ -121,6 +121,6 @@ module.exports = function(grunt) {
   // for instant update during development.
   //
   grunt.registerTask('watch', ['browserify:watch']);
-  
+
 }
 

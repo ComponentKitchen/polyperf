@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Native JS: createdCallback</title>
+
+  <script src="lib/webcomponents.js"></script>
+  <script src="build/js-web-components.js"></script>
+
+  <script>
+    var numTests = 1;
+    var componentElement = null;
+    var timeStart, timeStop;
+
+    window.createdCallbackComplete = function() {
+      //console.log('window.createdCallbackComplete');
+    };
+
+    function onTestButtonClick() {
+      var inputElem = document.getElementById('loopTries');
+      numTests = inputElem.value;
+
+      timeStart = performance.now();
+
+      for (var i = 0; i < numTests; i++) {
+        runTestInstance();
+      }
+
+      timeStop = performance.now();
+      var reportString = numTests + ' runs completed. ' + (timeStop - timeStart).toFixed(4) + ' milliseconds';
+      var reportElem = document.createElement('div');
+      reportElem.innerHTML = reportString;
+      document.body.appendChild(reportElem);
+      //console.log(numTests + ' runs completed. ' + (timeStop - timeStart).toFixed(4) + ' milliseconds');
+    }
+
+    function runTestInstance() {
+      if (componentElement) {
+        componentElement.parentNode.removeChild(componentElement);
+        componentElement = null;
+      }
+
+      componentElement = document.createElement('js-component-1');
+      document.body.appendChild(componentElement);
+    }
+  </script>
+
+</head>
+
+<body>
+  <h3>Timing tests for native JS web component with 20 mixins implementing createdCallback</h3>
+  <div>
+    <span>Test runs:</span>
+    <input type="number" id="loopTries" value="1">
+    <input type="button" value="Test" onclick="onTestButtonClick()">
+  </div>
+</body>
+
+</html>

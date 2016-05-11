@@ -5,6 +5,16 @@ class Component1 extends Composable(HTMLElement).compose(
   Mixin1
 ) {
 
+  createdCallback() {
+    if (super.createdCallback) { super.createdCallback(); }
+
+    // Check for the existence on the host page of the createdCallbackComplete method
+    // and call it if it exists
+    if (window.createdCallbackComplete) {
+      window.createdCallbackComplete();
+    }
+  }
+
   /*
    * Debugging utility: logs a message, prefixed by the component's tag.
    */
@@ -15,4 +25,5 @@ class Component1 extends Composable(HTMLElement).compose(
 
 }
 
+document.registerElement('js-component-1', Component1);
 export default Component1;

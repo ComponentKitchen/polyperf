@@ -10,7 +10,7 @@ let path = require('path');
 // This is all folders inside the /packages folder that start with the prefix
 // "basic-".
 const JS_PACKAGE_FOLDER = 'js-packages';
-const POLYMER_PACKAGE_FOLDER = 'polymer-packages';
+//const POLYMER_PACKAGE_FOLDER = 'polymer-packages';
 const allJSPackages = fs.readdirSync(JS_PACKAGE_FOLDER).filter(fileName => {
   let filePath = path.join(JS_PACKAGE_FOLDER, fileName);
   let stat = fs.statSync(filePath);
@@ -122,5 +122,5 @@ module.exports = function(grunt) {
   //
   grunt.registerTask('watch', ['browserify:watch']);
 
-}
+};
 

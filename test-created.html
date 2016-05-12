@@ -7,12 +7,18 @@
 
   <script src="lib/webcomponents.js"></script>
   <script src="build/js-web-components.js"></script>
+  <script src="node_modules/basic-list-box/dist/basic-list-box.js"></script>
   <link rel="import" href="polymer-packages/poly-component-1/src/poly-component-1.html">
 
   <script>
     var numTests = 1;
     var componentElement = null;
     var timeStart, timeStop;
+    var componentType = 'Polymer';
+
+    var testList = [
+      {name: 'CreatedCallback'}
+    ];
 
     window.createdCallbackComplete = function() {
       //console.log('window.createdCallbackComplete');
@@ -21,6 +27,9 @@
     function onTestButtonClick() {
       var inputElem = document.getElementById('loopTries');
       numTests = inputElem.value;
+
+      var componentTypeElem = document.getElementById('componentType');
+      componentType = componentTypeElem.selectedItem.textContent;
 
       timeStart = performance.now();
 
@@ -41,17 +50,40 @@
         componentElement = null;
       }
 
-      componentElement = document.createElement('js-component-1');
-      //componentElement = document.createElement('poly-component-1');
+      var tag;
+      switch (componentType) {
+        case 'Polymer':
+        default:
+          tag = 'poly-component-1';
+          break;
+
+        case 'JavaScript':
+          tag = 'js-component-1';
+          break;
+      }
+      componentElement = document.createElement(tag);
       document.body.appendChild(componentElement);
     }
+
   </script>
 
 </head>
 
 <body>
-  <h3>Timing tests for native JS web component with 20 mixins implementing createdCallback</h3>
-  <div>
+  <h3>Timing tests for native JavaScript versus Polymer 1.0 components</h3>
+
+  <h3>Tests:</h3>
+  <basic-list-box id="testList" selection-required="true" aria-label="Tests" style="height: 50px; max-width: 250px;">
+    <div>CreatedCallback</div>
+  </basic-list-box>
+
+  <h3>Component type:</h3>
+  <basic-list-box id="componentType" selection-required="true" aria-label="Component type" style="height: 50px; max-width: 250px; margin-top: 20px">
+    <div>Polymer</div>
+    <div>JavaScript</div>
+  </basic-list-box>
+
+  <div style="margin-top: 40px;">
     <span>Test runs:</span>
     <input type="number" id="loopTries" value="1">
     <input type="button" value="Test" onclick="onTestButtonClick()">

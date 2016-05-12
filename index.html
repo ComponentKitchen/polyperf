@@ -15,6 +15,8 @@
     var componentElement = null;
     var timeStart, timeStop;
     var componentType = 'Polymer';
+    var containerElement;
+    var resultsElement;
 
     window.createdCallbackComplete = function() {
       //console.log('window.createdCallbackComplete');
@@ -27,6 +29,9 @@
       var componentTypeElem = document.getElementById('componentType');
       componentType = componentTypeElem.selectedItem.textContent;
 
+      containerElement = document.getElementById('componentContainer');
+      resultsElement = document.getElementById('resultsContainer');
+
       timeStart = performance.now();
 
       for (var i = 0; i < numTests; i++) {
@@ -37,7 +42,7 @@
       var reportString = numTests + ' runs completed against ' + componentType + '. ' + (timeStop - timeStart).toFixed(4) + ' milliseconds';
       var reportElem = document.createElement('div');
       reportElem.innerHTML = reportString;
-      document.body.appendChild(reportElem);
+      resultsElement.appendChild(reportElem);
     }
 
     function runTestInstance() {
@@ -58,7 +63,7 @@
           break;
       }
       componentElement = document.createElement(tag);
-      document.body.appendChild(componentElement);
+      containerElement.appendChild(componentElement);
     }
 
   </script>
@@ -84,6 +89,9 @@
     <input type="number" id="loopTries" value="1">
     <input type="button" value="Test" onclick="onTestButtonClick()">
   </div>
+
+  <div id="resultsContainer" style="margin-top: 20px"></div>
+  <div id="componentContainer"></div>
 </body>
 
 </html>

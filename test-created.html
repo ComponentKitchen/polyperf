@@ -7,6 +7,7 @@
 
   <script src="lib/webcomponents.js"></script>
   <script src="build/js-web-components.js"></script>
+  <link rel="import" href="polymer-packages/poly-component-1/src/poly-component-1.html">
 
   <script>
     var numTests = 1;
@@ -32,7 +33,6 @@
       var reportElem = document.createElement('div');
       reportElem.innerHTML = reportString;
       document.body.appendChild(reportElem);
-      //console.log(numTests + ' runs completed. ' + (timeStop - timeStart).toFixed(4) + ' milliseconds');
     }
 
     function runTestInstance() {
@@ -42,6 +42,7 @@
       }
 
       componentElement = document.createElement('js-component-1');
+      //componentElement = document.createElement('poly-component-1');
       document.body.appendChild(componentElement);
     }
   </script>

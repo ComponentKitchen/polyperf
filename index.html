@@ -16,10 +16,6 @@
     var timeStart, timeStop;
     var componentType = 'Polymer';
 
-    var testList = [
-      {name: 'CreatedCallback'}
-    ];
-
     window.createdCallbackComplete = function() {
       //console.log('window.createdCallbackComplete');
     };
@@ -38,7 +34,7 @@
       }
 
       timeStop = performance.now();
-      var reportString = numTests + ' runs completed. ' + (timeStop - timeStart).toFixed(4) + ' milliseconds';
+      var reportString = numTests + ' runs completed against ' + componentType + '. ' + (timeStop - timeStart).toFixed(4) + ' milliseconds';
       var reportElem = document.createElement('div');
       reportElem.innerHTML = reportString;
       document.body.appendChild(reportElem);

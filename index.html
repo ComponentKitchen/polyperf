@@ -15,6 +15,7 @@
     var componentElement = null;
     var timeStart, timeStop;
     var componentType = 'Polymer';
+    var testType = 'CreatedCallback';
     var containerElement;
     var resultsElement;
 
@@ -29,13 +30,59 @@
       var componentTypeElem = document.getElementById('componentType');
       componentType = componentTypeElem.selectedItem.textContent;
 
+      var testTypeElem = document.getElementById('testList');
+      testType = testTypeElem.selectedItem.textContent;
+
       containerElement = document.getElementById('componentContainer');
       resultsElement = document.getElementById('resultsContainer');
 
+      switch (testType) {
+        case 'CreatedCallback':
+        default:
+          createCallbackTest();
+          break;
+
+        case 'Deep Mixin':
+          deepMixinTest();
+          break;
+      }
+    }
+
+    function deepMixinTest() {
+      removeComponentFromPage();
+
+      var tag = getComponentTag();
+      componentElement = document.createElement(tag);
+      containerElement.appendChild(componentElement);
+
+      var functionObj;
+      switch (componentType) {
+        case 'Polymer':
+        default:
+          functionObj = componentElement.Behavior20_Method_1;
+          break;
+
+        case 'JavaScript':
+          functionObj = componentElement.Mixin20_Method_1;
+          break;
+      }
+
+      timeStart = performance.now();
+      for (var i = 0; i < numTests; i++) {
+        functionObj(1, 2);
+      }
+      timeStop = performance.now();
+      var reportString = numTests + ' runs completed against ' + componentType + '. ' + (timeStop - timeStart).toFixed(4) + ' milliseconds';
+      var reportElem = document.createElement('div');
+      reportElem.innerHTML = reportString;
+      resultsElement.appendChild(reportElem);
+    }
+
+    function createCallbackTest() {
       timeStart = performance.now();
 
       for (var i = 0; i < numTests; i++) {
-        runTestInstance();
+        runCreateCallbackTestInstance();
       }
 
       timeStop = performance.now();
@@ -45,13 +92,24 @@
       resultsElement.appendChild(reportElem);
     }
 
-    function runTestInstance() {
+    function runCreateCallbackTestInstance() {
+      removeComponentFromPage();
+
+      var tag = getComponentTag();
+      componentElement = document.createElement(tag);
+      containerElement.appendChild(componentElement);
+    }
+
+    function removeComponentFromPage() {
       if (componentElement) {
         componentElement.parentNode.removeChild(componentElement);
         componentElement = null;
       }
+    }
 
+    function getComponentTag() {
       var tag;
+
       switch (componentType) {
         case 'Polymer':
         default:
@@ -62,8 +120,8 @@
           tag = 'js-component-1';
           break;
       }
-      componentElement = document.createElement(tag);
-      containerElement.appendChild(componentElement);
+
+      return tag;
     }
 
   </script>
@@ -76,6 +134,7 @@
   <h3>Tests:</h3>
   <basic-list-box id="testList" selection-required="true" aria-label="Tests" style="height: 50px; max-width: 250px;">
     <div>CreatedCallback</div>
+    <div>Deep Mixin</div>
   </basic-list-box>
 
   <h3>Component type:</h3>

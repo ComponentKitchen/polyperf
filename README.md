@@ -19,3 +19,10 @@ method is invoked to traverse the full prototype chain.
 
 The second test compares invoking a method deepest on the prototype chain for native JavaScript components against
 a call on a Polymer behavior where behaviors are "flattened" in the object space.
+
+## Instructions
+* Clone the project
+* npm install
+* grunt build
+* View index.html under a web server
+

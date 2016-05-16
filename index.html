@@ -11,11 +11,16 @@
   <link rel="import" href="polymer-packages/poly-component-1/src/poly-component-1.html">
 
   <script>
+    var COMPONENT_TYPE_JAVASCRIPT = 'JavaScript';
+    var COMPONENT_TYPE_POLYMER = 'Polymer';
+
+    var TEST_TYPE_CREATEDCALLBACK = 'CreatedCallback';
+    var TEST_TYPE_DEEPMIXIN = 'Deep Mixin';
+
     var numTests = 1;
     var componentElement = null;
-    var timeStart, timeStop;
-    var componentType = 'Polymer';
-    var testType = 'CreatedCallback';
+    var componentType;
+    var testType;
     var containerElement;
     var resultsElement;
 
@@ -33,12 +38,12 @@
       resultsElement = document.getElementById('resultsContainer');
 
       switch (testType) {
-        case 'CreatedCallback':
+        case TEST_TYPE_CREATEDCALLBACK:
         default:
           createCallbackTest();
           break;
 
-        case 'Deep Mixin':
+        case TEST_TYPE_DEEPMIXIN:
           deepMixinTest();
           break;
       }
@@ -53,39 +58,33 @@
 
       var functionObj;
       switch (componentType) {
-        case 'Polymer':
+        case COMPONENT_TYPE_POLYMER:
         default:
           functionObj = componentElement.Behavior1_Method_1;
           break;
 
-        case 'JavaScript':
+        case COMPONENT_TYPE_JAVASCRIPT:
           functionObj = componentElement.Mixin1_Method_1;
           break;
       }
 
-      timeStart = performance.now();
+      var timeStart = performance.now();
       for (var i = 0; i < numTests; i++) {
         functionObj(1, 2);
       }
-      timeStop = performance.now();
-      var reportString = numTests + ' runs completed against ' + componentType + '. ' + (timeStop - timeStart).toFixed(4) + ' milliseconds';
-      var reportElem = document.createElement('div');
-      reportElem.innerHTML = reportString;
-      resultsElement.appendChild(reportElem);
+      var timeStop = performance.now();
+
+      displayResults(timeStart, timeStop);
     }
 
     function createCallbackTest() {
-      timeStart = performance.now();
-
+      var timeStart = performance.now();
       for (var i = 0; i < numTests; i++) {
         runCreateCallbackTestInstance();
       }
+      var timeStop = performance.now();
 
-      timeStop = performance.now();
-      var reportString = numTests + ' runs completed against ' + componentType + '. ' + (timeStop - timeStart).toFixed(4) + ' milliseconds';
-      var reportElem = document.createElement('div');
-      reportElem.innerHTML = reportString;
-      resultsElement.appendChild(reportElem);
+      displayResults(timeStart, timeStop);
     }
 
     function runCreateCallbackTestInstance() {
@@ -101,6 +100,15 @@
         componentElement.parentNode.removeChild(componentElement);
         componentElement = null;
       }
+    }
+
+    function displayResults(timeStart, timeStop) {
+      var reportString = numTests + ' runs completed against ' + componentType +
+        '. ' + (timeStop - timeStart).toFixed(4) + ' milliseconds';
+
+      var reportElem = document.createElement('div');
+      reportElem.innerHTML = reportString;
+      resultsElement.appendChild(reportElem);
     }
 
     function getComponentTag() {

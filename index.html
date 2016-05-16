@@ -19,10 +19,6 @@
     var containerElement;
     var resultsElement;
 
-    window.createdCallbackComplete = function() {
-      //console.log('window.createdCallbackComplete');
-    };
-
     function onTestButtonClick() {
       var inputElem = document.getElementById('loopTries');
       numTests = inputElem.value;
@@ -59,11 +55,11 @@
       switch (componentType) {
         case 'Polymer':
         default:
-          functionObj = componentElement.Behavior20_Method_1;
+          functionObj = componentElement.Behavior1_Method_1;
           break;
 
         case 'JavaScript':
-          functionObj = componentElement.Mixin20_Method_1;
+          functionObj = componentElement.Mixin1_Method_1;
           break;
       }
 

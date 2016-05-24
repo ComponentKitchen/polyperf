@@ -50,31 +50,35 @@
     }
 
     function deepMixinTest() {
-      removeComponentFromPage();
+      var totalTime = 0;
 
-      var tag = getComponentTag();
-      componentElement = document.createElement(tag);
-      containerElement.appendChild(componentElement);
-
-      var functionObj;
-      switch (componentType) {
-        case COMPONENT_TYPE_POLYMER:
-        default:
-          functionObj = componentElement.Behavior1_Method_1;
-          break;
-
-        case COMPONENT_TYPE_JAVASCRIPT:
-          functionObj = componentElement.Mixin1_Method_1;
-          break;
-      }
-
-      var timeStart = performance.now();
       for (var i = 0; i < numTests; i++) {
-        functionObj(1, 2);
-      }
-      var timeStop = performance.now();
+        removeComponentFromPage();
 
-      displayResults(timeStart, timeStop);
+        var tag = getComponentTag();
+        componentElement = document.createElement(tag);
+        containerElement.appendChild(componentElement);
+
+        var timeStart, timeStop;
+        switch (componentType) {
+          case COMPONENT_TYPE_POLYMER:
+          default:
+            timeStart = performance.now();
+            componentElement.Behavior1_Method_1(1, 2);
+            timeStop = performance.now();
+            break;
+
+          case COMPONENT_TYPE_JAVASCRIPT:
+            timeStart = performance.now();
+            componentElement.Mixin1_Method_1(1, 2);
+            timeStop = performance.now();
+            break;
+        }
+
+        totalTime += timeStop - timeStart;
+      }
+
+      displayResults(totalTime);
     }
 
     function createCallbackTest() {
@@ -84,7 +88,7 @@
       }
       var timeStop = performance.now();
 
-      displayResults(timeStart, timeStop);
+      displayResults(timeStop - timeStart);
     }
 
     function runCreateCallbackTestInstance() {
@@ -102,9 +106,9 @@
       }
     }
 
-    function displayResults(timeStart, timeStop) {
+    function displayResults(totalTime) {
       var reportString = numTests + ' runs completed against ' + componentType +
-        '. ' + (timeStop - timeStart).toFixed(4) + ' milliseconds';
+          '. ' + totalTime.toFixed(4) + ' milliseconds';
 
       var reportElem = document.createElement('div');
       reportElem.innerHTML = reportString;
